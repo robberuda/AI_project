@@ -4,8 +4,7 @@ goal = 'WWWWGGRRBBOOGGRRBBOOYYYY'
 
 start = 'WBROWBYOWGRBGWGRBRYOYOGY'
 
-newstring = moves.B('WWWWGGRRBBOOGGRRBBOOYYYY')
-
 print(goal)
-print(newstring)
+print(moves.U(goal))
+print(moves.B(goal))
 
