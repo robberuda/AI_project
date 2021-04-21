@@ -4,7 +4,8 @@ goal = 'WWWWGGRRBBOOGGRRBBOOYYYY'
 
 start = 'WBROWBYOWGRBGWGRBRYOYOGY'
 
-newstring = noMove('WWWWGGRRBBOOGGRRBBOOYYYY')
+newstring = moves.B('WWWWGGRRBBOOGGRRBBOOYYYY')
 
 print(goal)
 print(newstring)
+

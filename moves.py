@@ -3,92 +3,64 @@
 
 # Up Quarter Turn Clockwise
 def noMove(pos):
-	return (pos[0] + pos[1] +
-			pos[2] + pos[3] +
-			pos[4] + pos[5] + pos[6] + pos[7] + pos[8] + pos[9] + pos[10] + pos[11] +
-			pos[12] + pos[13] + pos[14] + pos[15] + pos[16] + pos[17] + pos[18] + pos[19] +
-			pos[20]+ pos[21] +
+	return (pos[0]  + pos[1] +
+	        pos[2]  + pos[3] +
+	        pos[4]  + pos[5]  + pos[6]  + pos[7]  + pos[8]  + pos[9]  + pos[10] + pos[11] +
+	        pos[12] + pos[13] + pos[14] + pos[15] + pos[16] + pos[17] + pos[18] + pos[19] +
+			pos[20] + pos[21] +
 			pos[22] + pos[23])
 
 
-
-
-# Front Quarter Turn Counterclockwise
-def Fp(pos):
-	return (pos[17] + pos[11] + pos[2] +
-			pos[3] + pos[12] + pos[4] +
-			pos[0] + pos[7] + pos[8] +
-			pos[9] + pos[10] + pos[18] +
-			pos[13] + pos[5] + pos[1] +
-			pos[15] + pos[16] + pos[19] +
-			pos[14] + pos[6] + pos[20])
-
-# Front Half Turn
-def F2(pos):
-	return (pos[19] + pos[18] + pos[2] +
-			pos[3] + pos[13] + pos[12] +
-			pos[17] + pos[7] + pos[8] +
-			pos[9] + pos[10] + pos[14] +
-			pos[5] + pos[4] + pos[11] +
-			pos[15] + pos[16] + pos[6] +
-			pos[1] + pos[0] + pos[20])
+# Up Quarter Turn Clockwise
+def U(pos):
+	return (pos[2]  + pos[0] +
+			pos[3]  + pos[1] +
+			pos[6]  + pos[7] + pos[8] + pos[9] + pos[10] + pos[11] + pos[4] + pos[5] +
+			pos[12] + pos[13] + pos[14] + pos[15] + pos[16] + pos[17] + pos[18] + pos[19] +
+			pos[20] + pos[21] +
+			pos[22] + pos[23])
 
 # Right Quarter Turn Clockwise
 def R(pos):
-	return (pos[12] + pos[1] + pos[2] +
-			pos[4] + pos[18] + pos[5] +
-			pos[6] + pos[7] + pos[8] +
-			pos[0] + pos[11] + pos[17] +
-			pos[20] + pos[13] + pos[14] +
-			pos[3] + pos[10] + pos[16] +
-			pos[15] + pos[19] + pos[9])
+	return (pos[0]  + pos[5]  +
+			pos[2]  + pos[13] +
+			pos[4]  + pos[21] + pos[14] + pos[6] + pos[3]  + pos[9]  + pos[10] + pos[11] +
+			pos[12] + pos[23] + pos[15] + pos[7] + pos[1]  + pos[17] + pos[18] + pos[19] +
+			pos[20] + pos[16] +
+			pos[22] + pos[8])
 
-# Right Quarter Turn Counterclockwise
-def Rp(pos):
-	return (pos[9] + pos[1] + pos[2] +
-			pos[15] + pos[3] + pos[5] +
-			pos[6] + pos[7] + pos[8] +
-			pos[20] + pos[16] + pos[10] +
-			pos[0] + pos[13] + pos[14] +
-			pos[18] + pos[17] + pos[11] +
-			pos[4] + pos[19] + pos[12])
+# Left Quarter Turn Clockwise
+def L(pos):
+	return (pos[17] + pos[1] +
+	        pos[9] + pos[3] +
+	        pos[0]  + pos[5]  + pos[6]  + pos[7]  + pos[8]  + pos[22]  + pos[18] + pos[10] +
+	        pos[2]  + pos[13] + pos[14] + pos[15] + pos[16] + pos[20] + pos[19] + pos[11] +
+			pos[4]  + pos[21] +
+			pos[12] + pos[23])
 
-# Right Half Turn
-def R2(pos):
-	return (pos[20] + pos[1] + pos[2] +
-			pos[18] + pos[15] + pos[5] +
-			pos[6] + pos[7] + pos[8] +
-			pos[12] + pos[17] + pos[16] +
-			pos[9] + pos[13] + pos[14] +
-			pos[4] + pos[11] + pos[10] +
-			pos[3] + pos[19] + pos[0])
+# Down Quarter Turn Clockwise
+def D(pos):
+	return (pos[0]  + pos[1] +
+	        pos[2]  + pos[3] +
+	        pos[4]  + pos[5]  + pos[6]  + pos[7]  + pos[8]  + pos[9]  + pos[10] + pos[11] +
+	        pos[18] + pos[19] + pos[12] + pos[13] + pos[14] + pos[15] + pos[16] + pos[17] +
+			pos[22] + pos[20] +
+			pos[23] + pos[21])
 
-# Up Quarter Turn Clockwise
-def UU(pos):
-	return (pos[3] + pos[0] + pos[1] +
-			pos[2] + pos[10] + pos[11] +
-			pos[4] + pos[5] + pos[6] +
-			pos[7] + pos[8] + pos[9] +
-			pos[12] + pos[13] + pos[14] +
-			pos[15] + pos[16] + pos[17] +
-			pos[18] + pos[19] + pos[20])
+# Front Quarter Turn Clockwise
+def F(pos):
+	return (pos[0]  + pos[1] +
+	        pos[19] + pos[11] +
+	        pos[12] + pos[4] + pos[2]  + pos[7]  + pos[8]  + pos[9]  + pos[10] + pos[20] +
+	        pos[13] + pos[5] + pos[3] + pos[15] + pos[16] + pos[17] + pos[18] + pos[21] +
+			pos[15] + pos[14] +
+			pos[22] + pos[23])
 
-# Up Quarter Turn Counterclockwise
-def Up(pos):
-	return (pos[1] + pos[2] + pos[3] +
-			pos[0] + pos[6] + pos[7] +
-			pos[8] + pos[9] + pos[10] +
-			pos[11] + pos[4] + pos[5] +
-			pos[12] + pos[13] + pos[14] +
-			pos[15] + pos[16] + pos[17] +
-			pos[18] + pos[19] + pos[20])
-
-# Up Half Turn
-def U2(pos):
-	return (pos[2] + pos[3] + pos[0] +
-			pos[1] + pos[8] + pos[9] +
-			pos[10] + pos[11] + pos[4] +
-			pos[5] + pos[6] + pos[7] +
-			pos[12] + pos[13] + pos[14] +
-			pos[15] + pos[16] + pos[17] +
-			pos[18] + pos[19] + pos[20])
+# Back Quarter Turn Clockwise
+def B(pos):
+	return (pos[7]  + pos[15] +
+	        pos[2]  + pos[3] +
+	        pos[4]  + pos[5]  + pos[6]  + pos[23] + pos[16] + pos[8]  + pos[1] + pos[11] +
+	        pos[12] + pos[13] + pos[14] + pos[22] + pos[17] + pos[9] + pos[0] + pos[19] +
+			pos[20] + pos[21] +
+			pos[10] + pos[18])
