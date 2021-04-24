@@ -42,9 +42,11 @@ class search_tree:
         #results = [moves.Fp(father.value), moves.Rp(father.value),  moves.Up(father.value)]
         children = []
         for i in range(len(results)):
+
             if results[i] not in self.elements_value:
                 n = node(results[i])
                 n.move = moves_index[i]
+                print(n.move)
                 n.parent = father
                 n.depth = father.depth + 1
                 self.elements.append(n)
@@ -87,6 +89,14 @@ class search_tree:
         sol.reverse()
         print (sol)
 
+    def print_level(self, level):
+        print('level', level, ':', end=' ')
+        father_move = 'N'
+        for el in self.elements:
+            if el.depth == level :
+                if (level != 0):print(el.parent.move, end='->')
+                print(el.move, end=' ')
+        print('\n')
 
 
 
@@ -119,4 +129,8 @@ start_time = time.time()
 tree.expand_tree()
 print('\nworked for ' + str(round(time.time() - start_time, 2)) + ' seconds')
 if (tree.solution == 0): tree.print_tree()
-
+tree.print_level(0)
+tree.print_level(1)
+tree.print_level(2)
+tree.print_level(3)
+tree.print_level(4)
