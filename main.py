@@ -18,7 +18,7 @@ class node:
 
 #definition of search tree
 class search_tree:
-    def __init__(self):
+    def __init__(self, depth_limit=3):
         self.root = None
         self.elements = []
         self.elements_value = []
@@ -27,6 +27,7 @@ class search_tree:
         self.solution = None
         self.solutionNode = None
         self.semi_solution = None
+        self.depth_limit = depth_limit + 1
 
     def add_root(self, root):
         if self.root == None:
@@ -37,28 +38,49 @@ class search_tree:
             self.max_depth = 0
             self.solution = 0
 
-    def get_children(self, father):
+    def get_children_BF(self, father):
         results = [moves.F(father.value), moves.Fc(father.value), moves.R(father.value), moves.Rc(father.value), moves.U(father.value), moves.Uc(father.value)]
-        #results = [moves.Fp(father.value), moves.Rp(father.value),  moves.Up(father.value)]
-        children = []
         for i in range(len(results)):
-
             if results[i] not in self.elements_value:
                 n = node(results[i])
                 n.move = moves_index[i]
-                print(n.move)
                 n.parent = father
                 n.depth = father.depth + 1
                 self.elements.append(n)
                 self.elements_value.append(results[i])
                 self.leaves.append(n)
-                if n.depth >= self.max_depth:
+                if n.depth > self.max_depth:
                     self.max_depth = n.depth
                 if n.value == goal:
                     self.solution = 1
                     self.solutionNode = n
+
         self.leaves.remove(father)
-        
+
+    def get_children_DF(self, father):
+        results = [moves.F(father.value), moves.Fc(father.value), moves.R(father.value), moves.Rc(father.value), moves.U(father.value), moves.Uc(father.value)]
+        children = []
+
+        for i in range(len(results)):
+            if results[i] not in self.elements_value:
+                n = node(results[i])
+                n.move = moves_index[i]
+                n.parent = father
+                n.depth = father.depth + 1
+                self.elements.append(n)
+                self.elements_value.append(results[i])
+                children.append(n)
+                if n.depth > self.max_depth:
+                    self.max_depth = n.depth
+                if n.value == goal:
+                    self.solution = 1
+                    self.solutionNode = n
+
+        self.leaves.remove(father)
+        #self.elements.remove(father)
+        self.leaves = children + self.leaves
+
+
     def print_tree(self):
         print('max depth is: ', self.max_depth)
         for i in range(self.max_depth+1):
@@ -68,26 +90,49 @@ class search_tree:
                     cnt +=1
             print(i,': ', cnt)
 
-    def expand_tree(self):
-        for el in self.leaves:
-            if el.depth < 9:
-                #print('leaves number: ', len(self.leaves))
-                self.get_children(el)
-                if (self.solution):
-                    print('SOLUTION FOUND: ', end='')
-                    self.print_tree()
-                    self.print_solution(self.solutionNode)
-                    break
+
+    def expand_tree_BF(self):
+
+        while self.max_depth < self.depth_limit:
+
+            self.get_children_BF(self.leaves[0])
+
+            if (self.solution):
+                print('\n\n\n\nSOLUTION FOUND: ', end='')
+                self.print_tree()
+                self.print_solution(self.solutionNode)
+                break
+
+
+    def expand_tree_DF(self):
+
+        while self.max_depth < self.depth_limit:
+
+            if len(self.leaves) != 0:
+                if self.leaves[0].depth < self.depth_limit-1:
+                    self.get_children_DF(self.leaves[0])
+                else:
+                    self.leaves.remove(self.leaves[0])
             else: break
+
+
+            if (self.solution):
+                print('\n\n\n\nSOLUTION FOUND: ', end='')
+                self.print_tree()
+                self.print_solution(self.solutionNode)
+                break
+
+
 
     def print_solution(self, n):
         sol = []
+        print('solution is :', end='')
         for d in range(n.depth):
             sol.append(n.move)
-            #print(n.move, end = '<-->')
             n = n.parent
         sol.reverse()
-        print (sol)
+        print(sol)
+
 
     def print_level(self, level):
         print('level', level, ':', end=' ')
@@ -100,7 +145,7 @@ class search_tree:
 
 
 
-start = 'RYWRORBRGYGYORBWBWGWO'
+start = 'WYBOROGWOWGBGRWBRRYGY'
 
 start2 = 'WWGGOOBWRRYGYGOWRRBYB'
 
@@ -110,27 +155,25 @@ start5 = 'GRYWOGWGROBYBYBGWRWRO'
 
 start6 = 'RROWGGWGYGOYRWBBRWBOY'
 
-
+start8 = 'GOYWRGYGRBRWYWBOGRBOW' #high frequency of front moves
 
 
 
 #create root node
-root = node(start6)
+root = node(start8)
 root.depth = 0
 
 #create search tree
-tree = search_tree()
+tree = search_tree(10)
 
 #add root
 tree.add_root(root)
 
 
 start_time = time.time()
-tree.expand_tree()
+tree.expand_tree_BF()
+
 print('\nworked for ' + str(round(time.time() - start_time, 2)) + ' seconds')
+
 if (tree.solution == 0): tree.print_tree()
-tree.print_level(0)
-tree.print_level(1)
-tree.print_level(2)
-tree.print_level(3)
-tree.print_level(4)
+
