@@ -157,14 +157,14 @@ start6 = 'RROWGGWGYGOYRWBBRWBOY'
 
 start8 = 'GOYWRGYGRBRWYWBOGRBOW' #high frequency of front moves
 
-
+startBro = 'BRRROWBBYYGWYGRGWOGWO'
 
 #create root node
-root = node(start8)
+root = node(startBro)
 root.depth = 0
 
 #create search tree
-tree = search_tree(10)
+tree = search_tree(7)
 
 #add root
 tree.add_root(root)
