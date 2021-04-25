@@ -65,3 +65,40 @@ def Uc(pos):
 			pos[12] + pos[13] + pos[14] +
 			pos[15] + pos[16] + pos[17] +
 			pos[18] + pos[19] + pos[20])
+
+
+def find_position(string):
+
+    cubelets = [string[0] + string[4] + string[11],
+                string[1] + string[5] + string[6],
+                string[2] + string[7] + string[8],
+                string[3] + string[9] + string[10],
+                string[12] + string[17] + string[18],
+                string[13] + string[14] + string[19],
+                string[15] + string[16] + string[20]]
+    positions = []
+    for cubelet in cubelets:
+        if 'W' in cubelet:  # is W
+            if 'B' in cubelet:  # is B
+                if 'R' in cubelet:  # is R
+                    id = 3
+                else:  # is O
+                    id = 2
+            else:  # is G
+                if 'R' in cubelet:  # is R
+                    id = 0
+                else:  # is O
+                    id = 1
+        else:  # is Y
+            if 'B' in cubelet:  # is B
+                if 'R' in cubelet:  # is R
+                    id = 6
+                else:  # is O
+                    id = 7
+            else:  # is G
+                if 'R' in cubelet:  # is R
+                    id = 4
+                else:  # is O
+                    id = 5
+        positions.append(id)
+    return positions

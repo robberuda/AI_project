@@ -2,18 +2,27 @@ import moves
 import time
 
 goal = 'WWWWGGOOBBRRGGOBRRYYY'
+c0 = 'W---G------R---------'
+
+def cubi(pos):
+    c0 = pos[0,
 
 
 moves_index = {0:'F', 1:'Fc', 2:'R', 3:'Rc', 4:'U', 5:'Uc'}
-#moves_index = {0:'Fc', 1:'Rc', 2:'Uc'}
 
 #definition of node
 class node:
+
     def __init__(self, value=None, move=None, parent=None):
         self.value = value
         self.move = move
         self.parent = parent  # pointer to parent node in tree
         self.depth = None
+        self.score = None
+
+    def compute_score(self): #this is h()
+        self.value[]
+        
 
 
 #definition of search tree
@@ -123,6 +132,27 @@ class search_tree:
                 break
 
 
+    def expand_tree_Astar(self): #da fare
+
+        while len(self.leaves) != 0:
+
+            #for el in self.leaves:
+                #controlla il punteggio
+                #posiziona il nodo
+
+
+            if self.leaves[0].depth < self.depth_limit-1:
+                self.get_children_DF(self.leaves[0])
+            else:
+                self.leaves.remove(self.leaves[0])
+
+            if (self.solution):
+                print('\n\n\n\nSOLUTION FOUND: ', end='')
+                self.print_tree()
+                self.print_solution(self.solutionNode)
+                break
+
+
 
     def print_solution(self, n):
         sol = []
@@ -157,14 +187,13 @@ start6 = 'RROWGGWGYGOYRWBBRWBOY'
 
 start8 = 'GOYWRGYGRBRWYWBOGRBOW' #high frequency of front moves
 
-startBro = 'BRRROWBBYYGWYGRGWOGWO'
 
 #create root node
-root = node(startBro)
+root = node(start8)
 root.depth = 0
 
 #create search tree
-tree = search_tree(7)
+tree = search_tree(8)
 
 #add root
 tree.add_root(root)
