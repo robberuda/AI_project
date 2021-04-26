@@ -9,7 +9,7 @@ solved = np.array([[1,1,1],[0,1,1],[0,1,0],[1,1,0],[1,0,1],[0,0,1],[1,0,0]]) #no
 #---------------------0-------1-------2-------3-------4-------5-------6-----------
 
 moves_index = {0:'F', 1:'Fc', 2:'R', 3:'Rc', 4:'U', 5:'Uc'}
-
+moves_index_reverse = {'F':'Fc', 'R':'Rc','Uc':'U','Fc':'F','Rc':'R','U':'Uc'}
 
 # definition of node ---------------------------------------------------------------------------------------------------
 class node:
@@ -83,13 +83,21 @@ class search_tree:
             self.max_depth = 0
             self.solution = 0
 
-    def print_solution(self, n):
+    def print_solution(self,n):
         sol = []
         print('solution is :', end='')
         for d in range(n.depth):
             sol.append(n.move)
             n = n.parent
         sol.reverse()
+        print(sol,end='')
+
+
+    def print_solution_reverse(self, n):
+        sol = []
+        for d in range(n.depth):
+            sol.append(moves_index_reverse[n.move])
+            n = n.parent
         print(sol)
 
 
@@ -112,7 +120,9 @@ class search_tree:
             print(i,': ', cnt)
 
 
-    def expand_tree_BF(self):
+    def expand_tree_BF(self, n):
+
+        self.depth_limit = n
 
         while self.max_depth < self.depth_limit:
 
@@ -197,7 +207,54 @@ class search_tree:
 
 
 
-start = 'GBWRYYRBRGWROBOGWGYWO'
+    def solve_bidirectional(self):
+        self.expand_tree_BF(self.depth_limit)
+        self.print_tree()
+        if (self.solution == 1):
+            self.print_solution()
+            exit(1)
+
+        # create goal node
+        goalNode = node(goal)
+        goalNode.depth = 0
+        goalNode.score = 0
+
+        # create second search tree
+        treeFromGoal = search_tree(7)
+
+        # add root to second search tree
+        treeFromGoal.add_root(goalNode)
+
+        #start_time_goal = time.time()
+        treeFromGoal.expand_tree_BF(8)
+
+        #print tree and execution time
+        treeFromGoal.print_tree()
+
+
+        #print('\nworked for ' + str(round(time.time() - start_time_goal, 2)) + ' seconds')
+
+        #start_time_confront = time.time()
+
+        # find optimal solution
+        for g in range(len(treeFromGoal.elements)):
+            for s in range(len(self.elements)):
+                if treeFromGoal.elements[g].value == self.elements[s].value:
+                    print('solution found')
+
+                    print('from start: ', end='')
+                    self.print_solution(self.elements[s])
+
+                    print('----->', end='')
+                    treeFromGoal.print_solution_reverse(treeFromGoal.elements[g])
+
+                    #print('\nworked for ' + str(round(time.time() - start_time_confront, 2)) + ' seconds')
+
+                    exit(1)
+
+
+
+start = 'YOOWBGYBWGORWYRWRRGGB'
 
 start2 = 'WWGGOOBWRRYGYGOWRRBYB'
 
@@ -223,50 +280,11 @@ treeFromRoot = search_tree(7)
 #add root
 treeFromRoot.add_root(startNode)
 
-start_time_root = time.time()
-treeFromRoot.expand_tree_BF()
-treeFromRoot.print_tree()
-
-print('\nworked for ' + str(round(time.time() - start_time_root, 2)) + ' seconds')
-
-if (treeFromRoot.solution == 1): exit(1)
 
 
-#create root node
-goalNode = node(goal)
-goalNode.depth = 0
-goalNode.score = 0
+start_time = time.time()
 
-#create search tree
-treeFromGoal = search_tree(7)
+treeFromRoot.solve_bidirectional()
 
-#add root
-treeFromGoal.add_root(goalNode)
+print('\nworked for ' + str(round(time.time() - start_time, 2)) + ' seconds')
 
-start_time_goal = time.time()
-treeFromGoal.expand_tree_BF()
-
-treeFromGoal.print_tree()
-
-print('\nworked for ' + str(round(time.time() - start_time_goal, 2)) + ' seconds')
-
-
-
-
-
-start_time_confront=time.time()
-
-for g in range(len(treeFromGoal.elements)):
-    for s in range(len(treeFromRoot.elements)):
-        if treeFromGoal.elements[g].value == treeFromRoot.elements[s].value:
-            print('solution found')
-
-            print('from start: ', end='')
-            treeFromRoot.print_solution(treeFromRoot.elements[s])
-
-            print('from goal: ', end='')
-            treeFromGoal.print_solution(treeFromGoal.elements[g])
-
-            print('\nworked for ' + str(round(time.time() - start_time_confront, 2)) + ' seconds')
-
-            exit(1)
