@@ -209,7 +209,7 @@ class search_tree:
                     n.compute_heuristic() # f(n) = h(n)
                     n.score += n.depth # f(n) = g(n) + h(n)
 
-                    print('nodo: ', n.depth,':', n.move, 'score: ', n.score)
+                    #print('nodo: ', n.depth,':', n.move, 'score: ', n.score)
 
 
                     self.elements.append(n)
@@ -221,20 +221,19 @@ class search_tree:
 
                         if el == self.leaves.index(self.leaves[-1]):  # se l'indice corrisponde con l'ultimo elemento
                             self.leaves.append(n)
-                            print('LO METTO IN CODA')
+                            #print('LO METTO IN CODA')
                             break
 
 
                         elif self.leaves[el].score > n.score:
-                            print('iserisco il nodo prima di: ', self.leaves[el].depth,':', self.leaves[el].move, 'score: ', self.leaves[el].score, end=' ')
-                            print('e dopo di: ', self.leaves[el-1].depth, ':', self.leaves[el-1].move,'score: ', self.leaves[el-1].score)
+                            #print('iserisco il nodo prima di: ', self.leaves[el].depth,':', self.leaves[el].move, 'score: ', self.leaves[el].score, end=' ')
+                            #print('e dopo di: ', self.leaves[el-1].depth, ':', self.leaves[el-1].move,'score: ', self.leaves[el-1].score)
                             self.leaves.insert(el, n) #inserendo in posizione "i" sposta l'i-esimo in posizione i+1
                             break
 
-                        else:
-                            print('non ho inserito il nodo in posizione ', el)
+                        #else:
+                            #print('non ho inserito il nodo in posizione ', el)
 
-                        #problema: il nodo viene inserito al posto del root node
 
 
                     if n.depth > self.max_depth:
@@ -292,17 +291,18 @@ start8 = 'GOYWRGYGRBRWYWBOGRBOW' #high frequency of front moves
 
 
 #create root node
-root = node(start6)
+root = node(start)
 root.depth = 0
 root.score = 0
 
 #create search tree
-tree = search_tree(6)
+tree = search_tree(12)
 
 #add root
 tree.add_root(root)
 
 start_time = time.time()
+#tree.expand_tree_BF()
 tree.expand_tree_Astar()
 
 print('\nworked for ' + str(round(time.time() - start_time, 2)) + ' seconds')
