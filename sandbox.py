@@ -1,11 +1,14 @@
 from itertools import permutations
 from scipy.spatial.distance import cdist
+import numpy as np
 
-A = (0,0,0)
-B = (1,0,1)
-out = cdist(A, B, metric='cityblock')
-print(out)
+solved = np.array([[1,1,1],[0,1,1],[0,1,0],[1,1,0],[1,0,1],[0,0,1],[1,0,0]]) #noto
+#---------------------0-------1-------2-------3-------4-------5-------6-----------
 
+
+
+#print(solved)
+#print(solved[0])
 
 goal = 'WWWWGGOOBBRRGGOBRRYYY'
 start = 'WYBOROGWOWGBGRWBRRYGY'
@@ -15,7 +18,7 @@ start5 = 'GRYWOGWGROBYBYBGWRWRO'
 start6 = 'RROWGGWGYGOYRWBBRWBOY'
 
 
-def find_position(string):
+def compute_heuristic(string):
 
     cubelets = [string[0] + string[4] + string[11],
                 string[1] + string[5] + string[6],
@@ -24,7 +27,9 @@ def find_position(string):
                 string[12] + string[17] + string[18],
                 string[13] + string[14] + string[19],
                 string[15] + string[16] + string[20]]
-    positions = []
+
+    positions = np.empty((0,3))
+    #print(positions)
     for cubelet in cubelets:
         if 'W' in cubelet:  # is W
             if 'B' in cubelet:  # is B
@@ -48,16 +53,13 @@ def find_position(string):
                     id = 4
                 else:  # is O
                     id = 5
-        positions.append(id)
-    return positions
+        positions = np.append(positions, [solved[id]], axis=0)
+
+    return sum(  np.diag(  cdist(  solved, positions, metric='cityblock'  )  )  )
 
 
-positions = find_position(start)
-print(positions)
 
-#[3, 5, 2, 1, 4, 0, 6]
-
-#[0, 1, 2, 3, 4, 5, 6]
+print(compute_heuristic(start6))
 
 
 

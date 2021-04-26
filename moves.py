@@ -7,98 +7,66 @@
 
 # Front Quarter Turn Clockwise
 def F(pos):
-	return (pos[6] + pos[14] + pos[2] +
-			pos[3] + pos[5] + pos[13] +
-			pos[19] + pos[7] + pos[8] +
-			pos[9] + pos[10] + pos[1] +
-			pos[4] + pos[12] + pos[18] +
-			pos[15] + pos[16] + pos[0] +
-			pos[11] + pos[17] + pos[20])
+    return (pos[6] + pos[14] + pos[2] +
+            pos[3] + pos[5] + pos[13] +
+            pos[19] + pos[7] + pos[8] +
+            pos[9] + pos[10] + pos[1] +
+            pos[4] + pos[12] + pos[18] +
+            pos[15] + pos[16] + pos[0] +
+            pos[11] + pos[17] + pos[20])
+
 
 # Front Quarter Turn Counterclockwise
 def Fc(pos):
-	return (pos[17] + pos[11] + pos[2] +
-			pos[3] + pos[12] + pos[4] +
-			pos[0] + pos[7] + pos[8] +
-			pos[9] + pos[10] + pos[18] +
-			pos[13] + pos[5] + pos[1] +
-			pos[15] + pos[16] + pos[19] +
-			pos[14] + pos[6] + pos[20])
+    return (pos[17] + pos[11] + pos[2] +
+            pos[3] + pos[12] + pos[4] +
+            pos[0] + pos[7] + pos[8] +
+            pos[9] + pos[10] + pos[18] +
+            pos[13] + pos[5] + pos[1] +
+            pos[15] + pos[16] + pos[19] +
+            pos[14] + pos[6] + pos[20])
 
 
 # Right Quarter Turn Clockwise
 def R(pos):
-	return (pos[12] + pos[1] + pos[2] +
-			pos[4] + pos[18] + pos[5] +
-			pos[6] + pos[7] + pos[8] +
-			pos[0] + pos[11] + pos[17] +
-			pos[20] + pos[13] + pos[14] +
-			pos[3] + pos[10] + pos[16] +
-			pos[15] + pos[19] + pos[9])
+    return (pos[12] + pos[1] + pos[2] +
+            pos[4] + pos[18] + pos[5] +
+            pos[6] + pos[7] + pos[8] +
+            pos[0] + pos[11] + pos[17] +
+            pos[20] + pos[13] + pos[14] +
+            pos[3] + pos[10] + pos[16] +
+            pos[15] + pos[19] + pos[9])
+
 
 # Right Quarter Turn Counterclockwise
 def Rc(pos):
-	return (pos[9] + pos[1] + pos[2] +
-			pos[15] + pos[3] + pos[5] +
-			pos[6] + pos[7] + pos[8] +
-			pos[20] + pos[16] + pos[10] +
-			pos[0] + pos[13] + pos[14] +
-			pos[18] + pos[17] + pos[11] +
-			pos[4] + pos[19] + pos[12])
+    return (pos[9] + pos[1] + pos[2] +
+            pos[15] + pos[3] + pos[5] +
+            pos[6] + pos[7] + pos[8] +
+            pos[20] + pos[16] + pos[10] +
+            pos[0] + pos[13] + pos[14] +
+            pos[18] + pos[17] + pos[11] +
+            pos[4] + pos[19] + pos[12])
+
 
 # Up Quarter Turn Clockwise
 def U(pos):
-	return (pos[3] + pos[0] + pos[1] +
-			pos[2] + pos[10] + pos[11] +
-			pos[4] + pos[5] + pos[6] +
-			pos[7] + pos[8] + pos[9] +
-			pos[12] + pos[13] + pos[14] +
-			pos[15] + pos[16] + pos[17] +
-			pos[18] + pos[19] + pos[20])
+    return (pos[3] + pos[0] + pos[1] +
+            pos[2] + pos[10] + pos[11] +
+            pos[4] + pos[5] + pos[6] +
+            pos[7] + pos[8] + pos[9] +
+            pos[12] + pos[13] + pos[14] +
+            pos[15] + pos[16] + pos[17] +
+            pos[18] + pos[19] + pos[20])
+
 
 # Up Quarter Turn Counterclockwise
 def Uc(pos):
-	return (pos[1] + pos[2] + pos[3] +
-			pos[0] + pos[6] + pos[7] +
-			pos[8] + pos[9] + pos[10] +
-			pos[11] + pos[4] + pos[5] +
-			pos[12] + pos[13] + pos[14] +
-			pos[15] + pos[16] + pos[17] +
-			pos[18] + pos[19] + pos[20])
+    return (pos[1] + pos[2] + pos[3] +
+            pos[0] + pos[6] + pos[7] +
+            pos[8] + pos[9] + pos[10] +
+            pos[11] + pos[4] + pos[5] +
+            pos[12] + pos[13] + pos[14] +
+            pos[15] + pos[16] + pos[17] +
+            pos[18] + pos[19] + pos[20])
 
-
-def find_position(string):
-
-    cubelets = [string[0] + string[4] + string[11],
-                string[1] + string[5] + string[6],
-                string[2] + string[7] + string[8],
-                string[3] + string[9] + string[10],
-                string[12] + string[17] + string[18],
-                string[13] + string[14] + string[19],
-                string[15] + string[16] + string[20]]
-    positions = []
-    for cubelet in cubelets:
-        if 'W' in cubelet:  # is W
-            if 'B' in cubelet:  # is B
-                if 'R' in cubelet:  # is R
-                    id = 3
-                else:  # is O
-                    id = 2
-            else:  # is G
-                if 'R' in cubelet:  # is R
-                    id = 0
-                else:  # is O
-                    id = 1
-        else:  # is Y
-            if 'B' in cubelet:  # is B
-                if 'R' in cubelet:  # is R
-                    id = 6
-                else:  # is O
-                    id = 7
-            else:  # is G
-                if 'R' in cubelet:  # is R
-                    id = 4
-                else:  # is O
-                    id = 5
-        positions.append(id)
-    return positions

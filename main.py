@@ -1,12 +1,13 @@
 import moves
 import time
+from scipy.spatial.distance import cdist
+import numpy as np
+
 
 goal = 'WWWWGGOOBBRRGGOBRRYYY'
-c0 = 'W---G------R---------'
 
-def cubi(pos):
-    c0 = pos[0,
-
+solved = np.array([[1,1,1],[0,1,1],[0,1,0],[1,1,0],[1,0,1],[0,0,1],[1,0,0]]) #noto
+#---------------------0-------1-------2-------3-------4-------5-------6-----------
 
 moves_index = {0:'F', 1:'Fc', 2:'R', 3:'Rc', 4:'U', 5:'Uc'}
 
@@ -20,9 +21,43 @@ class node:
         self.depth = None
         self.score = None
 
-    def compute_score(self): #this is h()
-        self.value[]
-        
+    def compute_heuristic(self):
+        cubelets = [self.value[0] + self.value[4] + self.value[11],
+                    self.value[1] + self.value[5] + self.value[6],
+                    self.value[2] + self.value[7] + self.value[8],
+                    self.value[3] + self.value[9] + self.value[10],
+                    self.value[12] + self.value[17] + self.value[18],
+                    self.value[13] + self.value[14] + self.value[19],
+                    self.value[15] + self.value[16] + self.value[20]]
+
+        positions = np.empty((0, 3))
+
+        for cubelet in cubelets:
+            if 'W' in cubelet:  # is W
+                if 'B' in cubelet:  # is B
+                    if 'R' in cubelet:  # is R
+                        id = 3
+                    else:  # is O
+                        id = 2
+                else:  # is G
+                    if 'R' in cubelet:  # is R
+                        id = 0
+                    else:  # is O
+                        id = 1
+            else:  # is Y
+                if 'B' in cubelet:  # is B
+                    if 'R' in cubelet:  # is R
+                        id = 6
+                    else:  # is O
+                        id = 7
+                else:  # is G
+                    if 'R' in cubelet:  # is R
+                        id = 4
+                    else:  # is O
+                        id = 5
+            positions = np.append(positions, [solved[id]], axis=0)
+
+        self.score = sum(np.diag(cdist(solved, positions, metric='cityblock'))) / 4
 
 
 #definition of search tree
@@ -35,7 +70,6 @@ class search_tree:
         self.max_depth = None
         self.solution = None
         self.solutionNode = None
-        self.semi_solution = None
         self.depth_limit = depth_limit + 1
 
     def add_root(self, root):
@@ -48,7 +82,8 @@ class search_tree:
             self.solution = 0
 
     def get_children_BF(self, father):
-        results = [moves.F(father.value), moves.Fc(father.value), moves.R(father.value), moves.Rc(father.value), moves.U(father.value), moves.Uc(father.value)]
+        results = [moves.F(father.value), moves.Fc(father.value), moves.R(father.value), moves.Rc(father.value),
+                   moves.U(father.value), moves.Uc(father.value)]
         for i in range(len(results)):
             if results[i] not in self.elements_value:
                 n = node(results[i])
@@ -67,7 +102,8 @@ class search_tree:
         self.leaves.remove(father)
 
     def get_children_DF(self, father):
-        results = [moves.F(father.value), moves.Fc(father.value), moves.R(father.value), moves.Rc(father.value), moves.U(father.value), moves.Uc(father.value)]
+        results = [moves.F(father.value), moves.Fc(father.value), moves.R(father.value), moves.Rc(father.value),
+                   moves.U(father.value), moves.Uc(father.value)]
         children = []
 
         for i in range(len(results)):
@@ -132,15 +168,59 @@ class search_tree:
                 break
 
 
+
+    def get_children_Astar(self, father):
+        results = [moves.F(father.value), moves.Fc(father.value), moves.R(father.value), moves.Rc(father.value),
+                   moves.U(father.value), moves.Uc(father.value)]
+        for i in range(len(results)):
+            if results[i] not in self.elements_value:
+                n = node(results[i])
+                n.move = moves_index[i]
+                n.parent = father
+                n.depth = father.depth + 1
+                self.elements.append(n)
+                self.elements_value.append(results[i])
+                self.leaves.append(n)
+                if n.depth > self.max_depth:
+                    self.max_depth = n.depth
+                if n.value == goal:
+                    self.solution = 1
+                    self.solutionNode = n
+
+        self.leaves.remove(father)
+
     def expand_tree_Astar(self): #da fare
-
         while len(self.leaves) != 0:
+            results = [moves.F(self.leaves[0].value), moves.Fc(self.leaves[0].value), moves.R(self.leaves[0].value),
+                       moves.Rc(self.leaves[0].value), moves.U(self.leaves[0].value), moves.Uc(self.leaves[0].value)]
 
-            #for el in self.leaves:
-                #controlla il punteggio
-                #posiziona il nodo
+            for i in range(len(results)):
+                if results[i] not in self.elements_value:
+
+                    #create node:
+                    n = node(results[i])
+                    n.move = moves_index[i]
+                    n.parent = self.leaves[0]
+                    n.depth = self.leaves[0].depth + 1
+                    n.compute_heuristic()
+
+                    self.elements.append(n)
+                    self.elements_value.append(results[i])
+
+                    for i in range(len(self.leaves)):
+                        if n.score <= self.leaves[i].score:
+                            self.leaves.insert(i+1, n)
+                    #####.---------------------------------------------------------------------------------------------------continua da qua
+
+                    if n.depth > self.max_depth:
+                        self.max_depth = n.depth
+                    if n.value == goal:
+                        self.solution = 1
+                        self.solutionNode = n
 
 
+
+            ###template---------------------------------------
             if self.leaves[0].depth < self.depth_limit-1:
                 self.get_children_DF(self.leaves[0])
             else:
@@ -188,9 +268,11 @@ start6 = 'RROWGGWGYGOYRWBBRWBOY'
 start8 = 'GOYWRGYGRBRWYWBOGRBOW' #high frequency of front moves
 
 
+
 #create root node
-root = node(start8)
+root = node(start6)
 root.depth = 0
+root.score = 0
 
 #create search tree
 tree = search_tree(8)
@@ -198,9 +280,8 @@ tree = search_tree(8)
 #add root
 tree.add_root(root)
 
-
 start_time = time.time()
-tree.expand_tree_BF()
+tree.expand_tree_Astar()
 
 print('\nworked for ' + str(round(time.time() - start_time, 2)) + ' seconds')
 
