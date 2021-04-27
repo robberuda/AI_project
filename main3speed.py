@@ -5,7 +5,9 @@ import time
 from scipy.spatial.distance import cdist
 import numpy as np
 
+## è ancoraa solo una copia di main3.py,
 
+##---------------WORK IN PROGRESS
 
 
 
