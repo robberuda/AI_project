@@ -7,7 +7,13 @@ import numpy as np
 
 ## è ancoraa solo una copia di main3.py,
 
-##---------------WORK IN PROGRESS
+##--------------- WORK IN PROGRESS:
+##               -provare a usare hash invece delle stringhe
+##               -provare a calcolare manhattan per l'euristica
+##               -provare a usare una notazione diversa -> posizione cubi e rotazione
+##               -il metodo "not in" quanto pesa? ne possiamo fare uno migliore ottimizzato per le stringhe?
+##               -cercare configurazioni veloci cubo di rubik
+##               -guardare meglio i pattern database
 
 
 
@@ -96,7 +102,6 @@ class search_tree:
                         self.print_tree()
                         self.print_solution(n)
                         return None
-                        #break
 
             self.leaves.remove(self.leaves[0])
 
