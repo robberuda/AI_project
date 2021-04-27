@@ -2,9 +2,6 @@
 # Position is passed in and returned with the stickers in the order they should be after the turn.
 
 
-# Hard coded moves to perform on the cube.
-# Position is passed in and returned with the stickers in the order they should be after the turn.
-
 # Front Quarter Turn Clockwise
 def F(pos):
     return (pos[6] + pos[14] + pos[2] +

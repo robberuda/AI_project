@@ -1,4 +1,4 @@
-import moves
+import moves2
 import time
 from scipy.spatial.distance import cdist
 import numpy as np
@@ -126,8 +126,8 @@ class search_tree:
 
         while self.max_depth < self.depth_limit:
 
-            results = [moves.F(self.leaves[0].value), moves.Fc(self.leaves[0].value), moves.R(self.leaves[0].value),
-                       moves.Rc(self.leaves[0].value),moves.U(self.leaves[0].value), moves.Uc(self.leaves[0].value)]
+            results = [moves2.F(self.leaves[0].value), moves2.Fc(self.leaves[0].value), moves2.R(self.leaves[0].value),
+                       moves2.Rc(self.leaves[0].value), moves2.U(self.leaves[0].value), moves2.Uc(self.leaves[0].value)]
 
             for i in range(len(results)):
                 if results[i] not in self.elements_value:
@@ -157,8 +157,8 @@ class search_tree:
 
         while self.max_depth < self.depth_limit:
 
-            results = [moves.F(self.leaves[0].value), moves.Fc(self.leaves[0].value), moves.R(self.leaves[0].value),
-                       moves.Rc(self.leaves[0].value), moves.U(self.leaves[0].value), moves.Uc(self.leaves[0].value)]
+            results = [moves2.F(self.leaves[0].value), moves2.Fc(self.leaves[0].value), moves2.R(self.leaves[0].value),
+                       moves2.Rc(self.leaves[0].value), moves2.U(self.leaves[0].value), moves2.Uc(self.leaves[0].value)]
 
             for i in range(len(results)):
                 if results[i] not in self.elements_value:
