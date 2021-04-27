@@ -116,7 +116,7 @@ start3   = node(value='OGGWWWWWWRRYGGOOBRRBWGOOBBRBGGGOOOBBBRRWRYYYYYYY', move='
 start4   = node(value='WWGGGGRWBBWRRYOOYGOOYYOGWWRRYGYOOGWBWRRRBYBBOYBB', move='root')
 start5   = node(value='BWWWOGGBYBBRRBWRRYOOYWOOYWGROOOYBWGRRYGWGGGYRBBY', move='root')
 
-tree = search_tree(root=goalNode)
+tree = search_tree(root=start5)
 
 
 
