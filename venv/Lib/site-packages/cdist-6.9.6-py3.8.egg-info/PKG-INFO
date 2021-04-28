@@ -1,0 +1,32 @@
+Metadata-Version: 1.1
+Name: cdist
+Version: 6.9.6
+Summary: A Usable Configuration Management System
+Home-page: https://cdi.st
+Author: cdist contributors
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: 
+                cdist is a usable configuration management system.
+                It adheres to the KISS principle and is being used in small up to
+                enterprise grade environments.
+                cdist is an alternative to other configuration management systems like
+                cfengine, bcfg2, chef and puppet.
+            
+Platform: UNKNOWN
+Classifier: Development Status :: 6 - Mature
+Classifier: Environment :: Console
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: BSD
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: System :: Boot
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: System :: Operating System
+Classifier: Topic :: System :: Software Distribution
+Classifier: Topic :: Utilities
