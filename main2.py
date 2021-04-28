@@ -8,8 +8,6 @@ goal = 'WWWWGGOOBBRRGGOBRRYYY'
 solved = np.array([[1,1,1],[0,1,1],[0,1,0],[1,1,0],[1,0,1],[0,0,1],[1,0,0]]) #noto
 #---------------------0-------1-------2-------3-------4-------5-------6-----------
 
-moves_index = {0:'F', 1:'Fc', 2:'R', 3:'Rc', 4:'U', 5:'Uc'}
-moves_index_reverse = {'F':'Fc', 'R':'Rc','Uc':'U','Fc':'F','Rc':'R','U':'Uc'}
 
 # definition of node ---------------------------------------------------------------------------------------------------
 class node:
@@ -64,46 +62,37 @@ class node:
 
 # definition of search tree --------------------------------------------------------------------------------------------
 class search_tree:
-    def __init__(self, depth_limit=3):
-        self.root = None
-        self.elements = []
-        self.elements_value = []
-        self.leaves = []
-        self.max_depth = None
-        self.solution = None
+    def __init__(self, root = None, depth_limit = 3):
+        self.root = root
+        self.elements = [self.root]
+        self.elements_value = [self.root.value]
+        self.leaves = [self.root]
+        self.max_depth = 0
+        self.solution = 0
         self.solutionNode = None
         self.depth_limit = depth_limit + 1
 
-    def add_root(self, root):
-        if self.root == None:
-            self.root = root
-            self.elements = [self.root]
-            self.elements_value = [self.root.value]
-            self.leaves = [self.root]
-            self.max_depth = 0
-            self.solution = 0
 
-    def print_solution(self,n):
+    def print_solution(self,nod):
         sol = []
-        print('solution is :', end='')
-        for d in range(n.depth):
-            sol.append(n.move)
-            n = n.parent
+        print('\nsolution is :', end='')
+        for d in range(nod.depth):
+            sol.append(nod.move)
+            nod = nod.parent
         sol.reverse()
-        print(sol,end='')
+        for s in range(len(sol)):
+            print(' -> ', sol[s], end='')
 
 
-    def print_solution_reverse(self, n):
-        sol = []
-        for d in range(n.depth):
-            sol.append(moves_index_reverse[n.move])
-            n = n.parent
-        print(sol)
+    def print_solution_reverse(self, nod): #used only for bidirectional search, from node to goal
+        for d in range(nod.depth):
+            print(' -> ',moves2.moves_index_reverse[nod.move], end='')
+            nod = nod.parent
+
 
 
     def print_level(self, level):
         print('level', level, ':', end=' ')
-        father_move = 'N'
         for el in self.elements:
             if el.depth == level :
                 if (level != 0):print(el.parent.move, end='->')
@@ -111,7 +100,6 @@ class search_tree:
         print('\n')
 
     def print_tree(self):
-        print('max depth is: ', self.max_depth)
         for i in range(self.max_depth+1):
             cnt=0
             for el in self.elements:
@@ -132,7 +120,7 @@ class search_tree:
             for i in range(len(results)):
                 if results[i] not in self.elements_value:
                     n = node(results[i])
-                    n.move = moves_index[i]
+                    n.move = moves2.moves_index[i]
                     n.parent = self.leaves[0]
                     n.depth = self.leaves[0].depth + 1
                     self.elements.append(n)
@@ -142,15 +130,14 @@ class search_tree:
                         self.max_depth = n.depth
                     if n.value == goal:
                         self.solution = 1
-                        self.solutionNode = n
+                        print('\n\t--- SOLUTION FOUND! ---\n')
+                        self.print_tree()
+                        self.print_solution(n)
+                        return None
+
 
             self.leaves.remove(self.leaves[0])
 
-            if (self.solution):
-                print('\n\n\n\nSOLUTION FOUND: ', end='')
-                self.print_tree()
-                self.print_solution(self.solutionNode)
-                break
 
 
     def expand_tree_Astar(self): #da fare
@@ -165,7 +152,7 @@ class search_tree:
 
                     #create node:
                     n = node(results[i])
-                    n.move = moves_index[i]
+                    n.move = moves2.moves_index[i]
                     n.parent = self.leaves[0]
                     n.depth = self.leaves[0].depth + 1
                     n.compute_heuristic() # f(n) = h(n)
@@ -195,24 +182,20 @@ class search_tree:
                         self.max_depth = n.depth
                     if n.value == goal:
                         self.solution = 1
-                        self.solutionNode = n
+                        print('\n\t--- SOLUTION FOUND! ---\n', end='')
+                        self.print_tree()
+                        self.print_solution(n)
+                        return None
 
             self.leaves.remove(self.leaves[0])
 
-            if (self.solution):
-                print('\n\n\n\nSOLUTION FOUND: ', end='')
-                self.print_tree()
-                self.print_solution(self.solutionNode)
-                break
 
 
 
     def solve_bidirectional(self):
         self.expand_tree_BF(self.depth_limit)
-        self.print_tree()
-        if (self.solution == 1):
-            self.print_solution()
-            exit(1)
+
+        if (self.solution == 1): return None
 
         # create goal node
         goalNode = node(goal)
@@ -220,65 +203,48 @@ class search_tree:
         goalNode.score = 0
 
         # create second search tree
-        treeFromGoal = search_tree(7)
-
-        # add root to second search tree
-        treeFromGoal.add_root(goalNode)
+        treeFromGoal = search_tree(root=goalNode, depth_limit=self.depth_limit)
 
         #start_time_goal = time.time()
-        treeFromGoal.expand_tree_BF(8)
+        treeFromGoal.expand_tree_BF(self.depth_limit) # expand with bread-first the second tree
 
         #print tree and execution time
         treeFromGoal.print_tree()
 
 
-        #print('\nworked for ' + str(round(time.time() - start_time_goal, 2)) + ' seconds')
-
-        #start_time_confront = time.time()
-
         # find optimal solution
         for g in range(len(treeFromGoal.elements)):
             for s in range(len(self.elements)):
                 if treeFromGoal.elements[g].value == self.elements[s].value:
-                    print('solution found')
+                    print('\n\t--- SOLUTION FOUND! ---\n')
 
-                    print('from start: ', end='')
                     self.print_solution(self.elements[s])
 
-                    print('----->', end='')
                     treeFromGoal.print_solution_reverse(treeFromGoal.elements[g])
 
-                    #print('\nworked for ' + str(round(time.time() - start_time_confront, 2)) + ' seconds')
-
-                    exit(1)
+                    return None
 
 
 
-start = 'YOOWBGYBWGORWYRWRRGGB'
-
+start = 'GBOOYRWWGBWRGGRBRYOWY'
 start2 = 'WWGGOOBWRRYGYGOWRRBYB'
-
 start3 = 'WGGWBWRRYGOOYGOWRRBYB'
-
 start5 = 'GRYWOGWGROBYBYBGWRWRO'
-
 start6 = 'RROWGGWGYGOYRWBBRWBOY'
-
 start7 = 'WRBOOGWYRBWGGGOBWRYYR'
+start10 = 'RRORGWBGYGWYWOWRYGOBB'
+start12 = 'GBOOYRWWGBWRGGRBRYOWY'
 
-start8 = 'GOYWRGYGRBRWYWBOGRBOW' #high frequency of front moves
 
 
 
-startNode = node(start)
+startNode = node(start5)
 startNode.depth = 0
 startNode.score = 0
 
 #create search tree
-treeFromRoot = search_tree(7)
+treeFromRoot = search_tree(root=startNode, depth_limit=7)
 
-#add root
-treeFromRoot.add_root(startNode)
 
 
 
@@ -286,5 +252,5 @@ start_time = time.time()
 
 treeFromRoot.solve_bidirectional()
 
-print('\nworked for ' + str(round(time.time() - start_time, 2)) + ' seconds')
+print('\n\nworked for ' + str(round(time.time() - start_time, 2)) + ' seconds')
 

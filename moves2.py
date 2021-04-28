@@ -1,6 +1,8 @@
 # Hard coded moves to perform on the cube.
 # Position is passed in and returned with the stickers in the order they should be after the turn.
 
+moves_index = {0:'F', 1:'Fc', 2:'R', 3:'Rc', 4:'U', 5:'Uc'}
+moves_index_reverse = {'F':'Fc', 'R':'Rc','Uc':'U','Fc':'F','Rc':'R','U':'Uc'}
 
 # Front Quarter Turn Clockwise
 def F(pos):
