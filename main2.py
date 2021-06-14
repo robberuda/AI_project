@@ -13,20 +13,22 @@ solved = np.array([[1,1,1],[0,1,1],[0,1,0],[1,1,0],[1,0,1],[0,0,1],[1,0,0]]) #no
 class node:
 
     def __init__(self, value=None, move=None, parent=None):
-        self.value = value
-        self.move = move
-        self.parent = parent  # pointer to parent node in tree
-        self.depth = None
-        self.score = None
+        self.value = value    # value of the node, is the string that represent its configuration
+        self.move = move      # move used to arrive at this node
+        self.parent = parent  # pointer to the parent node
+        self.depth = None     # depth of the node
+        self.score = None     # depth of the node, use only with the A* search
+
+
 
     def compute_heuristic(self):
-        cubelets = [self.value[0] + self.value[4] + self.value[11],
-                    self.value[1] + self.value[5] + self.value[6],
-                    self.value[2] + self.value[7] + self.value[8],
-                    self.value[3] + self.value[9] + self.value[10],
-                    self.value[12] + self.value[17] + self.value[18],
-                    self.value[13] + self.value[14] + self.value[19],
-                    self.value[15] + self.value[16] + self.value[20]]
+        cubelets = [self.value[0] + self.value[1] + self.value[2],
+                    self.value[3] + self.value[4] + self.value[5],
+                    self.value[6] + self.value[7] + self.value[8],
+                    self.value[9] + self.value[10] + self.value[11],
+                    self.value[12] + self.value[13] + self.value[14],
+                    self.value[15] + self.value[16] + self.value[17],
+                    self.value[18] + self.value[19] + self.value[20]]
 
         positions = np.empty((0, 3))
 
@@ -60,6 +62,7 @@ class node:
 
 
 
+
 # definition of search tree --------------------------------------------------------------------------------------------
 class search_tree:
     def __init__(self, root = None, depth_limit = 3):
@@ -67,9 +70,10 @@ class search_tree:
         self.elements = [self.root]
         self.elements_value = [self.root.value]
         self.leaves = [self.root]
-        self.max_depth = 0
         self.solution = 0
         self.solutionNode = None
+
+        self.max_depth = 0
         self.depth_limit = depth_limit + 1
 
 
@@ -90,7 +94,6 @@ class search_tree:
             nod = nod.parent
 
 
-
     def print_level(self, level):
         print('level', level, ':', end=' ')
         for el in self.elements:
@@ -98,6 +101,7 @@ class search_tree:
                 if (level != 0):print(el.parent.move, end='->')
                 print(el.move, end=' ')
         print('\n')
+
 
     def print_tree(self):
         for i in range(self.max_depth+1):
@@ -192,7 +196,7 @@ class search_tree:
 
 
 
-    def solve_bidirectional(self):
+    def solve_bidirectional_old(self):
         self.expand_tree_BF(self.depth_limit)
 
         if (self.solution == 1): return None
@@ -224,6 +228,103 @@ class search_tree:
 
                     return None
 
+    def solve_bidirectional(self):
+        # if the root node is the goal configuration exit and report the situation
+
+        if self.root.value == goal:
+            print('\n\t--- SOLUTION FOUND! ---\n')
+            print('\n\t--- root is already the solution, solved in 0 moves ---\n')
+            return None
+
+        # create goal node
+        goalNode = node(goal)
+        goalNode.depth = 0
+        goalNode.score = 0
+
+        # create second search tree with goal node as root
+        treeFromGoal = search_tree(root=goalNode)
+
+
+        results = [moves2.F(self.leaves[0].value), moves2.Fc(self.leaves[0].value), moves2.R(self.leaves[0].value),
+                   moves2.Rc(self.leaves[0].value), moves2.U(self.leaves[0].value), moves2.Uc(self.leaves[0].value)]
+
+        while self.solution==0:
+            for i in range(len(results)):
+                if results[i] not in self.elements_value:
+                    n = node(results[i])
+                    n.move = moves2.moves_index[i]
+                    n.parent = self.leaves[0]
+                    n.depth = self.leaves[0].depth + 1
+                    self.elements.append(n)
+                    self.elements_value.append(results[i])
+                    self.leaves.append(n)
+
+                    # compare the new node with all leaves node of second tree with goal node as root
+                    # so the first time compare only with the goal node
+                    for j in treeFromGoal.leaves:
+                        if n.value == j.value:
+                            print('\n\t--- SOLUTION FOUND! ---\n')
+                            self.solution = 1
+                            self.solutionNode = n
+
+                            treeFromGoal.solution = 1
+                            treeFromGoal.solutionNode = j
+
+                            self.print_trees_bidirectional(goaltree=treeFromGoal)
+                            return 0
+
+            results = [moves2.F(treeFromGoal.leaves[0].value), moves2.Fc(treeFromGoal.leaves[0].value),
+                       moves2.R(treeFromGoal.leaves[0].value), moves2.Rc(treeFromGoal.leaves[0].value),
+                       moves2.U(treeFromGoal.leaves[0].value), moves2.Uc(treeFromGoal.leaves[0].value)]
+
+            for i in range(len(results)):
+                if results[i] not in treeFromGoal.elements_value:
+                    n = node(results[i])
+                    n.move = moves2.moves_index[i]
+                    n.parent = treeFromGoal.leaves[0]
+                    n.depth = treeFromGoal.leaves[0].depth + 1
+                    treeFromGoal.elements.append(n)
+                    treeFromGoal.elements_value.append(results[i])
+                    treeFromGoal.leaves.append(n)
+
+                    # compare the new node with all leaves node of second tree with goal node as root
+                    # so the first time compare only with the goal node
+                    for j in treeFromGoal.leaves:
+                        if n.value == j.value:
+                            print('\n\t--- SOLUTION FOUND! ---\n')
+                            treeFromGoal.solution = 1
+                            treeFromGoal.solutionNode = n
+
+                            self.solution = 1
+                            self.solutionNode = j
+
+                            self.print_trees_bidirectional(goaltree=treeFromGoal)
+                            return 0
+
+
+
+
+    def print_trees_bidirectional(self, goaltree):
+        print("\tFrom start:\n")
+        for i in range(self.solutionNode.depth+1):
+            cnt = 0
+            for el in self.elements:
+                if el.depth == i:
+                    cnt += 1
+            print(i, ': ', cnt)
+
+        for i in reversed(range(goaltree.solutionNode.depth+1)):
+            cnt = 0
+            for el in self.elements:
+                if el.depth == i:
+                    cnt += 1
+            print(i, ': ', cnt)
+
+        self.print_solution(self.solutionNode)
+        #self.print_solution_revers(goaltree.solutionNode)
+
+
+
 
 
 start = 'GBOOYRWWGBWRGGRBRYOWY'
@@ -238,12 +339,12 @@ start12 = 'GBOOYRWWGBWRGGRBRYOWY'
 
 
 
-startNode = node(start5)
+startNode = node(start12)
 startNode.depth = 0
 startNode.score = 0
 
 #create search tree
-treeFromRoot = search_tree(root=startNode, depth_limit=7)
+treeFromRoot = search_tree(root=startNode)
 
 
 
