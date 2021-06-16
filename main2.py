@@ -23,15 +23,6 @@ class search_tree:
         self.solutionNode = None                # solutionNode is a class node, it is the goal node that is the solution of the tree
 
 
-    def print_level(self, level):
-        print('level', level, ':', end=' ')
-        for el in self.elements:
-            if el.depth == level :
-                if (level != 0):print(el.parent.move, end='->')
-                print(el.move, end=' ')
-        print('\n')
-
-
     def print_trees_bidirectional(self, goaltree):
         for i in range(self.solutionNode.depth+1):
             cnt = 0
