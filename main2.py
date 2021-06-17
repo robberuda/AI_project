@@ -19,7 +19,6 @@ class search_tree:
         self.elements = [self.root]             # elements contain all node of the tree
         self.elements_value = [self.root.value] # elements_value contain only the strings of element of the tree
         self.leaves = [self.root]               # leaves contain all node of the tree that not have child
-        self.solution = 0                       # solution is a flag, is 1 when the solution is finds in the tree
         self.solutionNode = None                # solutionNode is a class node, it is the goal node that is the solution of the tree
 
 
@@ -76,8 +75,7 @@ class search_tree:
 
         while 1:
             # from here the the expantion of the main tree -------------------------------------------------------------
-            results = [moves2.F(self.leaves[0].value), moves2.Fc(self.leaves[0].value), moves2.R(self.leaves[0].value),
-                       moves2.Rc(self.leaves[0].value), moves2.U(self.leaves[0].value), moves2.Uc(self.leaves[0].value)]
+            results = moves2.get_moves(self.leaves[0].value)
 
             for i in range(len(results)):
                 if results[i] not in self.elements_value:
@@ -95,7 +93,6 @@ class search_tree:
                         if n.value == j.value:
                             print('\n\t--- SOLUTION FOUND! ---\n')
                             print('\t--- solvable in', (n.depth+ j.depth), 'moves---\n')
-                            self.solution = 1
                             self.solutionNode = n
 
                             treeFromGoal.solution = 1
@@ -107,9 +104,7 @@ class search_tree:
             self.leaves.remove(self.leaves[0])
 
             # from here the the expantion of the second tree, from goal state ------------------------------------------
-            results2 = [moves2.F(treeFromGoal.leaves[0].value), moves2.Fc(treeFromGoal.leaves[0].value),
-                       moves2.R(treeFromGoal.leaves[0].value), moves2.Rc(treeFromGoal.leaves[0].value),
-                       moves2.U(treeFromGoal.leaves[0].value), moves2.Uc(treeFromGoal.leaves[0].value)]
+            results2 = moves2.get_moves(treeFromGoal.leaves[0].value)
 
             for i in range(len(results)):
                 if results2[i] not in treeFromGoal.elements_value:
@@ -130,7 +125,6 @@ class search_tree:
                             treeFromGoal.solution = 1
                             treeFromGoal.solutionNode = n
 
-                            self.solution = 1
                             self.solutionNode = j
 
                             self.print_trees_bidirectional(goaltree=treeFromGoal)
@@ -167,7 +161,7 @@ start = startRandom # ## START CONDITION, CHANGE WITH A STRING ABOVE     ## #---
 goal  = solvedCube  # ## GOAL CONDITION, NOT NECESSARILY THE SOLVED CUBE ## #-------------------------------------------
 
 
-startNode = node(start)
+startNode = node(start5)
 
 treeFromRoot = search_tree(root=startNode) # create main search tree
 

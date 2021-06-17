@@ -1,18 +1,19 @@
 # Hard coded moves to perform on the cube.
 # Position is passed in and returned with the stickers in the order they should be after the turn.
+import time
 
 moves_index = {0:'F', 1:'Fc', 2:'R', 3:'Rc', 4:'U', 5:'Uc'} # enumeration of the moves
 moves_index_reverse = {'F':'Fc', 'R':'Rc','Uc':'U','Fc':'F','Rc':'R','U':'Uc'} # used to rebuild the moves to solve cube
 
 # Front Quarter Turn Clockwise
 def F(pos):
-    return (pos[6] + pos[14] + pos[2] +
-            pos[3] + pos[5] + pos[13] +
-            pos[19] + pos[7] + pos[8] +
-            pos[9] + pos[10] + pos[1] +
-            pos[4] + pos[12] + pos[18] +
-            pos[15] + pos[16] + pos[0] +
-            pos[11] + pos[17] + pos[20])
+    return (pos[6] + pos[14]+ pos[2] +
+            pos[3] + pos[5] + pos[13]+
+            pos[19]+ pos[7] + pos[8] +
+            pos[9] + pos[10]+ pos[1] +
+            pos[4] + pos[12]+ pos[18]+
+            pos[15]+ pos[16]+ pos[0] +
+            pos[11]+ pos[17]+ pos[20])
 
 # Front Quarter Turn Counterclockwise
 def Fc(pos):
@@ -63,3 +64,7 @@ def Uc(pos):
             pos[12] + pos[13] + pos[14] +
             pos[15] + pos[16] + pos[17] +
             pos[18] + pos[19] + pos[20])
+
+
+def get_moves(pos):
+	return [F(pos), Fc(pos), R(pos), Rc(pos), U(pos), Uc(pos)]
