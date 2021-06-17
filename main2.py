@@ -14,7 +14,7 @@ class node:
 # definition of search tree --------------------------------------------------------------------------------------------
 class search_tree:
 
-    def __init__(self, root = None, depth_limit = 3):
+    def __init__(self, root = None):
         self.root = root                        # root of tree, is a class node that contain start value
         self.elements = [self.root]             # elements contain all node of the tree
         self.elements_value = [self.root.value] # elements_value contain only the strings of element of the tree

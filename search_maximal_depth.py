@@ -20,6 +20,5 @@ def solve():
 		print('Depth ' + str(len(dist) - 1) + ': ' + str(len(dist[-1])) + ' positions')
 	print('2x2 Depth is ' + str(len(dist) - 2) + ', solved in ' + str(round(time.time() - start_time, 2)) + ' seconds')
 
-
 # main:
 solve()
