@@ -157,11 +157,11 @@ start14= 'YYWBROGOBYRGGGRWROWWB'
 startRandom = 'WYOBGGRGYYRRORBOWWGWB' # ## you can change this string if you want to use another start condition ## #
 
 
-start = startRandom # ## START CONDITION, CHANGE WITH A STRING ABOVE     ## #-------------------------------------------
+start = start14 # ## START CONDITION, CHANGE WITH A STRING ABOVE     ## #-------------------------------------------
 goal  = solvedCube  # ## GOAL CONDITION, NOT NECESSARILY THE SOLVED CUBE ## #-------------------------------------------
 
 
-startNode = node(start5)
+startNode = node(start)
 
 treeFromRoot = search_tree(root=startNode) # create main search tree
 
